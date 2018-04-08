@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Will Fleming" />
+
+
+<title>Soccer Shots</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Soccer Shots</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Soccer Shots</h1>
+<h3 class="subtitle"><em>An Exercise in Bayesian Hierarchical Modeling</em></h3>
+<h4 class="author"><em>Will Fleming</em></h4>
+
+</div>
+
+
+<p><img src="images/img.jpg" alt="http://www.dailymail.co.uk/sport/football/article-4980466/Tottenham-1-0-Bournemouth-Christian-Eriksen-scores.html" /></p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this analysis I model pro soccer team shots using three different Bayesian hierarchical models:</p>
+<ul>
+<li>A simple hierarchical Poisson model</li>
+<li>A Poisson regression with a random intercept</li>
+<li>A negative binomial regression with a random intercept</li>
+</ul>
+<p>I explore real game data which comes from <a href="https://www.kaggle.com/secareanualin/football-events">Kaggle</a>. It has been built by integrating different data sources and has been organized into two files:</p>
+<ul>
+<li><code>events.csv</code> contains event data about European soccer games, including shot attempts</li>
+<li><code>games.csv</code> contains metadata and market odds about each game</li>
+</ul>
+</div>
+<div id="data-exploration" class="section level2">
+<h2>Data Exploration</h2>
+<pre class="r"><code>library(readr)
+library(gridExtra)
+library(dplyr)
+library(rjags)
+library(ggplot2)
+
+options(knitr.table.format = &quot;html&quot;)
+theme_set(theme_classic())
+
+events &lt;- read_csv(&quot;data/events.csv&quot;, progress = FALSE)
+games &lt;- read_csv(&quot;data/ginf.csv&quot;, col_types = cols(date = col_date(format = &quot;%Y-%m-%d&quot;)), progress = FALSE)</code></pre>
+<p>Before modeling the shots, we can foresee a couple of problems with aggregating team and game data in this data set. If we are interested in shots per game per team and simply add up shots, there are two issues when we model the counts:</p>
+<ol style="list-style-type: decimal">
+<li><p>Games are different lengths due to overtime and delays. To work around this we will just model shots per 90 minutes of game play (the length of a regular game).</p></li>
+<li><p>If we use every game in this data set for our sample, they will not be independent, since every game’s shot count will be directly dependent on one other shot count (the opposing team for that game). If one team has ball possession, the other team doesn’t- and so if one team is shooting a lot, the other team probably isn’t shooting as much. To solve this, we can select half of our samples by randomly choosing one team’s shots for each game.</p></li>
+</ol>
+<p>Shot attempts are shown in the data as event type 1. We’ll create an integer team_id, as well as a team_game id which is the game_id and team_id concatenated. We’ll use <code>team_game</code> to group and <code>game_id</code> to sample. We’ll also create a column for the team’s odds, which will come from either the <code>odd_h</code> or <code>odd_a</code> columns, depending on if the sampled team was home or away.</p>
+<pre class="r"><code>attempts &lt;- events[events$event_type==1,]
+attempts$team_id &lt;- as.integer(as.factor(attempts$event_team))
+attempts$team_game &lt;- do.call(paste, c(attempts[c(&quot;id_odsp&quot;, &quot;team_id&quot;)], sep = &quot; &quot;)) 
+
+game_time_ranges &lt;- attempts %&gt;% group_by(id_odsp) %&gt;% summarise(time = max(time))
+games &lt;- merge(games, game_time_ranges, by = &quot;id_odsp&quot;, all.x = TRUE)
+
+
+attempts_by_team &lt;- attempts %&gt;% group_by(team_game, id_odsp, event_team, team_id) %&gt;% summarise(attempts = n())
+s_team_attempts &lt;- attempts_by_team %&gt;% group_by(id_odsp) %&gt;% sample_n(1)
+s_team_attempts &lt;- merge(s_team_attempts, games, all.x = TRUE)
+
+s_team_attempts$attempts_per_minute &lt;- s_team_attempts$attempts/s_team_attempts$time
+s_team_attempts$attempts_per_game &lt;- round(s_team_attempts$attempts_per_minute * 90, digits = 0)
+
+s_team_attempts$team_odds &lt;- ifelse(s_team_attempts$event_team == s_team_attempts$ht,
+                                    s_team_attempts$odd_h,
+                                    s_team_attempts$odd_a)</code></pre>
+<p>Let’s look at the distribution of shots per (90 min) game. At first glance, the data looks like it could be a Poisson distribution- although note that the variance is larger than the mean. Poisson variables have mean equal to variance, so this indicates over-dispersion in our data. We’ll proceed with Poisson anyway and see if the over-dispersion can be handled within the model.</p>
+<pre class="r"><code>g &lt;- ggplot(s_team_attempts, aes(attempts_per_game))
+g + geom_bar() + 
+  #geom_density(aes()) +
+  labs(title=&quot;All games, team shot totals&quot;, 
+       subtitle=paste(&quot;Overall mean = &quot;
+                      ,round(mean(s_team_attempts$attempts_per_game))
+                      ,&quot;\nOverall variance = &quot;
+                      ,round(var(s_team_attempts$attempts_per_game))),
+       #caption=&quot;Source:&quot;,
+       x=&quot;Shots&quot;,
+       y=&quot;# Games&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Now let’s look at the shots aggregated by team. The team averages vary, but we can also see that our sample sizes by team are all over the place. Teams with higher sample sizes also appear to make more shots per game. This might be because the better teams make more shots, and as a result get to play more games? A hierarchical model will take advantage of both differences in mean shots and sample sizes, as we will see.</p>
+<pre class="r"><code>team_stats &lt;- s_team_attempts %&gt;% group_by(team_id) %&gt;% summarise(median_attempts = median(attempts_per_game),
+                                                                  mean_attempts = mean(attempts_per_game),
+                                                                  n_games = n())
+
+
+ggplot(team_stats, aes(reorder(team_id, n_games), n_games, colour=median_attempts)) +
+  geom_point(size=2, alpha=.5) + 
+  scale_colour_gradient(high = &quot;blue&quot;, low=&quot;gray90&quot;) +
+  #geom_density(aes()) +
+  labs(title=&quot;Sample size by team&quot;, 
+       subtitle=&quot;Dots represent teams&quot;,
+       #caption=&quot;Source:&quot;,
+       x=&quot;Teams (sorted)&quot;,
+       y=&quot;Sample size (# Games)&quot;) +
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+coord_flip()</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(team_stats, aes(mean_attempts)) +
+  geom_histogram(binwidth = 0.4) + 
+  #geom_density(aes()) +
+  scale_x_continuous(limits = c(0, 20)) +
+  labs(title=&quot;Distribution of team mean shots per-game&quot;, 
+       subtitle=paste(&quot;Overall mean = &quot;
+                      ,round(mean(team_stats$mean_attempts))
+                      ,&quot;\nOverall variance = &quot;
+                      ,round(var(team_stats$mean_attempts))),
+       #caption=&quot;Source:&quot;,
+       x=&quot;Mean shot attempts&quot;,
+       y=&quot;# Teams&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="simple-hierarchical-model" class="section level2">
+<h2>Simple Hierarchical Model</h2>
+<p>Our first model is a simple hierarchical model where our <span class="math inline">\(n=9,074\)</span> independent shot counts come from <span class="math inline">\(k=142\)</span> teams, each of which has it’s own mean, <span class="math inline">\(\lambda_{t}\)</span>.</p>
+<p><span class="math display">\[y_{i}\mid t_{i}, \lambda_{t_{i}} \overset{\mathrm{ind.}}{\sim} \mathit{Poisson}(\lambda_{t_{i}}) \\t\in \left \{ 1,...,k \right \}\\ i=1,..,n\]</span></p>
+<p>The team means will come from a common gamma distribution:</p>
+<p><span class="math display">\[\lambda_{i} \overset{\mathrm{i.i.d.}}{\sim} \mathit{Gamma}(\alpha, \beta)\]</span></p>
+<p>with priors for the hyper-parameters also following gammas:</p>
+<p><span class="math display">\[\alpha \sim \mathit{Gamma}(30, 1) \\ \beta \sim \mathit{Gamma}(20, 10)\]</span> Setting up the model hierarchically allows us respect the fact that different teams will have different average shot counts, without making a separate model for every team. The structure utilizes all of the shot data, but a given team’s expected shots will depend on it’s own data more than other teams’ data. If a team doesn’t have as much historical data, it will rely more on the overall average.</p>
+<p>I’ve chosen relatively weak priors, since I don’t have strong beliefs about the exact distribution of team averages. I know that our data is comprehensive and representative of European soccer as a whole, but I have very little background knowledge about the sport or leagues. I think that it should be unlikely for a team’s average to be much lower than our data’s minimum of 9, since the team would simply not be scoring enough to win, and be forced to make changes. I suspect that team averages could be substantially higher than our data’s maximum of 18.5, since some teams could probably choose a more aggressive strategy with respect to shot attempts.</p>
+<p>We can visualize our prior predictive distribution by simulating draws from the hyper-parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, and then proceeding down the hierarchy.</p>
+<p>First let’s plot the hyper-parameter distributions and visualize the prior distributions. <span class="math inline">\(\alpha\)</span>/<span class="math inline">\(\beta\)</span> (the mean of a gamma distribution) is the overall team mean score.</p>
+<pre class="r"><code>alpha_pri_shape &lt;- 30
+alpha_pri_rate &lt;- 1
+
+beta_pri_shape &lt;- 20
+beta_pri_rate &lt;-  10
+
+alpha_plot &lt;- ggplot(data.frame(theta = seq(0,50)), aes(x=theta)) +
+  stat_function(fun = dgamma, args=list(shape=alpha_pri_shape, rate=alpha_pri_rate), alpha=.85) +
+  geom_vline(xintercept = alpha_pri_shape/alpha_pri_rate, linetype=&quot;dashed&quot;, size=.5) +
+  labs(title=expression(paste(alpha, &quot; prior&quot;)), 
+       subtitle=paste(&quot;Mean = &quot;,alpha_pri_shape/alpha_pri_rate),
+       #caption=&quot;Source:&quot;,
+       x=expression(theta),
+       y=expression(paste(&quot;Pr(&quot;,theta,&quot;)&quot;)))
+
+
+beta_plot &lt;- ggplot(data.frame(theta = seq(0,5)), aes(x=theta)) +
+  stat_function(fun = dgamma, args=list(shape=beta_pri_shape, rate=beta_pri_rate), alpha=.85) +
+  geom_vline(xintercept = beta_pri_shape/beta_pri_rate, linetype=&quot;dashed&quot;, size=.5) +
+  labs(title=expression(paste(beta, &quot; prior&quot;)), 
+       subtitle=paste(&quot;Mean = &quot;,beta_pri_shape/beta_pri_rate),
+       #caption=&quot;Source:&quot;,
+       x=expression(theta),
+       y=expression(paste(&quot;Pr(&quot;,theta,&quot;)&quot;)))
+
+set.seed(315)
+n_sim = 10000
+alpha_pri = rgamma(n_sim,alpha_pri_shape,alpha_pri_rate)
+beta_pri = rgamma(n_sim,beta_pri_shape,beta_pri_rate)
+mu_pri = alpha_pri/beta_pri
+#sig_pri = sqrt(alpha_pri/beta_pri^2)
+lambda_plot &lt;- ggplot(data.frame(mu_pri), aes(mu_pri), alpha=.85) +
+  geom_density(aes(y=..density..)) +
+  geom_vline(xintercept = mean(mu_pri), linetype=&quot;dashed&quot;, size=.5) +
+  labs(title=expression(paste(lambda, &quot; prior&quot;)), 
+       subtitle=paste(&quot;Mean = &quot;,round(mean(mu_pri),digits = 1)),
+       #caption=&quot;Source:&quot;,
+       x=&quot;Mean shot attempts&quot;,
+       y=&quot;# Teams&quot;) +
+  scale_x_continuous(limits = c(0, 40))
+
+lay &lt;- rbind(c(1,1,2,2),
+             c(NA,3,3,NA))
+
+grid.arrange(alpha_plot, beta_plot, lambda_plot, layout_matrix=lay)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>We can then sample from <span class="math inline">\(\lambda\)</span> to generate our data from our priors. Our data has 142 teams with different numbers of games. We will simplify and generate a balanced data set of 142 teams with 64 games each.</p>
+<pre class="r"><code>lam_pri = rgamma(n=142, shape=alpha_pri[1:142], rate=beta_pri[1:142])
+y_pri = rpois(n=9074, lambda=rep(lam_pri, each=64))
+g &lt;- ggplot(data.frame(y_pri), aes(y_pri))
+g + geom_histogram(aes(y=..density..), binwidth=1) +
+  labs(title=&quot;Shot Attempts&quot;, 
+       subtitle=&quot;Prior predictive distribution&quot;,
+       #caption=&quot;Source:&quot;,
+       x=&quot;# Shot Attempts&quot;,
+       y=&quot;# Games&quot;) +
+  scale_x_continuous(limits = c(0, 40))</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>This is a reconstruction of our data set, based only on the priors, re balanced by team. we’ll now use JAGS to define our model in R and perform the MCMC sampling.</p>
+<pre class="r"><code>mod_string = &quot; model {
+for (i in 1:length(attempts_per_game)) {
+  attempts_per_game[i] ~ dpois(lam[team_id[i]])
+}
+
+for (t in 1:max(team_id)) {
+  lam[t] ~ dgamma(alpha, beta)
+}
+
+alpha ~ dgamma(30, 1)
+beta ~ dgamma(20, 10)
+
+} &quot;
+
+data_jags = as.list(s_team_attempts)
+
+params = c(&quot;lam&quot;, &quot;alpha&quot;, &quot;beta&quot;)
+
+mod_1 = jags.model(textConnection(mod_string), data=data_jags, n.chains=3, quiet=TRUE)
+update(mod_1, 1e3, progress.bar=&quot;none&quot;)
+
+mod_sim_1 = coda.samples(model=mod_1,
+                       variable.names=params,
+                       n.iter=1e5,
+                       progress.bar=&quot;none&quot;)
+                       
+mod_csim_1 = as.mcmc(do.call(rbind, mod_sim_1))</code></pre>
+<p>JAGS allows us to create trace plots for the Markov chains to visually assess convergence:</p>
+<pre class="r"><code>plot(mod_sim_1)</code></pre>
+<p>‘’’ <img src="images/trace_plots.png" /></p>
+<p>Judging from the trace plots, we don’t see any long term trends, so it looks We don’t have any convergence issues. We can also check the maximum scale reduction factor of the Gelman-Rubin diagnostic for all of our parameters. If this value is much greater than 1 (eg. &gt; 1.2), this could indicate non-convergence. In that case, we’d try running the sampling longer.</p>
+<pre class="r"><code>#plot(mod_sim)
+g &lt;- gelman.diag(mod_sim_1)
+max(g$psrf[,2])</code></pre>
+<pre><code>## [1] 1.002149</code></pre>
+<p>Even though our chains converged, we should check to see how auto-correlated the samples are:</p>
+<pre class="r"><code>autocorr.plot(mod_sim_1)</code></pre>
+<p><img src="images/acf.png" /></p>
+<p>Our alpha and beta parameters are highly auto-correlated, even for higher lag values. This is not good because it lowers our effective sample size. We can see that our lambda parameters have effective sample sizes close to our number of iterations (300k), but alpha and beta’s sizes are much lower. There are steps we could take to fix this, such as re-parameterizing the model or thinning the chains, especially if we are interested in more than just the posterior means of the parameters.</p>
+<pre class="r"><code>e &lt;- effectiveSize(mod_sim_1)
+e[1:5]</code></pre>
+<pre><code>##      alpha       beta     lam[1]     lam[2]     lam[3] 
+##   2428.084   2461.768 296430.951 300000.000 297370.838</code></pre>
+<p>To check the overall model fit we can check the DIC:</p>
+<pre class="r"><code>dic_1 = dic.samples(mod_1, n.iter=1e3, progress.bar=&quot;none&quot;)
+dic_1</code></pre>
+<pre><code>## Mean deviance:  55010 
+## penalty 133.3 
+## Penalized deviance: 55143</code></pre>
+<p>We can look at how our fitted team means are distributed:</p>
+<pre class="r"><code>pm_params &lt;- colMeans(mod_csim_1)
+lambdas &lt;- tail(pm_params,-2)
+ggplot(data.frame(lambdas), aes(lambdas)) +
+  geom_histogram(binwidth = 1) + 
+  labs(title=expression(paste(&quot;Fitted &quot;,lambda, &quot; parameters&quot;)), 
+       subtitle=&quot;&quot;,
+       #caption=&quot;Source:&quot;,
+       x=expression(lambda),
+       y=&quot;# Teams&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Let’s examine the residuals for both the game and team levels of the model:</p>
+<pre class="r"><code>lambdas &lt;- data.frame(lambdas)
+
+lambdas$team_id&lt;-seq.int(nrow(lambdas))
+lambdas &lt;- merge(s_team_attempts, lambdas, all.x = TRUE)
+lambdas$residual &lt;- lambdas$attempts_per_game-lambdas$lambdas
+mod_1_resid_1 &lt;- ggplot(lambdas, aes(x = seq(1, length(residual)), y = residual)) +
+  geom_jitter(width = 0.15, height = 0.15, shape=20, alpha = .2, stroke=0) + 
+  labs(title=expression(paste(&quot;Shot residuals by index&quot;)), 
+       subtitle=&quot;&quot;,
+       #caption=&quot;Source:&quot;,
+       x=&quot;index&quot;,
+       y=&quot;Residuals&quot;)
+
+
+mod_1_resid_2 &lt;- ggplot(lambdas, aes(lambdas, residual)) +
+  geom_point(size=.05, shape=16, alpha = .4) + 
+  labs(title=expression(paste(&quot;Shot residuals by &quot;,lambda)), 
+       subtitle=&quot;&quot;,
+       #caption=&quot;Source:&quot;,
+       x=expression(lambda),
+       y=&quot;Residuals&quot;)
+
+
+lambdas &lt;- lambdas %&gt;% group_by(lambdas) %&gt;% summarise(variance = var(residual))
+mod_1_resid_var &lt;- ggplot(lambdas, aes(lambdas, variance)) +
+  geom_point(size=.05, shape=16) + 
+  labs(title=expression(paste(&quot;Residual variance by &quot;,lambda)), 
+       subtitle=&quot;&quot;,
+       #caption=&quot;Source:&quot;,
+       x=expression(lambda),
+       y=&quot;Variance&quot;) +
+  geom_abline(intercept = 0, linetype=2)
+
+lay &lt;- rbind(c(1,1,2,2),
+             c(NA,3,3,NA))
+
+grid.arrange(mod_1_resid_1, mod_1_resid_2, mod_1_resid_var, layout_matrix=lay)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>The residuals for individual game totals <span class="math inline">\(y_{i}-\lambda_{t_{i}}\)</span> appear to be clustered. This is due to the correlation among games from the same team, which is expected. We also see that a higher <span class="math inline">\(\lambda\)</span> are associated with higher variances- but the changes are not of the right proportion, so there is still too much dispersion. A Poisson regression will allow us to introduce more covariates which may help improve the fit.</p>
+</div>
+<div id="poisson-regression" class="section level2">
+<h2>Poisson Regression</h2>
+<p>There is an obvious covariate missing from the simple hierarchical model of shots: the relative skill of the opposing team. Recall that we removed half of our data to ensure that each game was an independent sample. We won’t use opposing team’s shot count, since that would never be known at prediction time. We can instead take the reciprocal of the sampled team’s pre-game odds to be the win-probability, which could predict their ability to outshoot the opposing team.</p>
+<pre class="r"><code>s_team_attempts$win_prob &lt;- 1/s_team_attempts$team_odds</code></pre>
+<p>Our linear model will be defined as follows: <span class="math display">\[y_{i}\mid \lambda_{i} \overset{\mathrm{ind.}}{\sim} \mathit{Poisson}(\lambda_{i}) \\ i=1,..,n\]</span></p>
+<p>With <span class="math inline">\(m\)</span> independent variables (in this case, just one): <span class="math display">\[\log (\lambda_{i})    = \alpha_{t_{i}}+{\beta}&#39;\mathbf{x}_{i}\\t\in \left \{ 1,...,k \right \}\\\mathbf{x}_{i}, {\beta}&#39;\in\mathbb{R}^{m} \]</span> or: <span class="math display">\[\mathrm{E}(y_{i}) = \lambda_{i} = e^{\alpha_{t_{i}}+{\beta}&#39;\mathbf{x}_{i}}\]</span></p>
+<p><span class="math inline">\(\alpha_{t}\)</span> will be the random intercept for team <span class="math inline">\(t\)</span>: <span class="math display">\[ \alpha_{t}\overset{\mathrm{i.i.d.}}{\sim}\mathit{N}\left (\mu, \tau^2\right )\]</span></p>
+<p>We will choose very uninformative priors for the coefficients and hyper-parameters: <span class="math display">\[\mu \sim \mathit{N}(0, 10^5) \\ \tau^2 \sim \mathit{Inv.Gamma}(1/2, 1/2)\\ \beta_{odds} \sim \mathit{N}(0, 10^3)\]</span></p>
+<pre class="r"><code>mod_string = &quot; model {
+    for (i in 1:length(attempts_per_game)) {
+        attempts_per_game[i] ~ dpois(lam[i])
+        log(lam[i]) = alpha[team_id[i]] + b_win*win_prob[i]
+    }
+
+    b_win ~ dnorm(0.0, 1.0/1e4)
+
+  for (t in 1:max(team_id)) {
+    alpha[t] ~ dnorm(mu, inv_tau_sq)
+  }
+  
+  mu ~ dnorm(0.0, 1.0/1.0e6)
+  inv_tau_sq ~ dgamma(1/2.0, 1/2.0)
+  tau = sqrt( 1.0 / inv_tau_sq )
+
+} &quot;
+
+data_jags = as.list(s_team_attempts)
+
+params = c(&quot;alpha&quot;, &quot;b_win&quot;, &quot;mu&quot;, &quot;tau&quot;)
+
+mod_2 = jags.model(textConnection(mod_string), data=data_jags, n.chains=3, quiet=TRUE)
+update(mod_2, 1e2, progress.bar=&quot;none&quot;)
+
+mod_sim_2 = coda.samples(model=mod_2,
+                       variable.names=params,
+                       n.iter=4e3,
+                       progress.bar=&quot;none&quot;)
+                       
+mod_csim_2 = as.mcmc(do.call(rbind, mod_sim_2))</code></pre>
+<p>Trace plots:</p>
+<pre class="r"><code>plot(mod_sim_2)</code></pre>
+<p><img src="images/trace_plots_2.png" /></p>
+<p>Gelman-Rubin diagnostic:</p>
+<pre class="r"><code>g &lt;- gelman.diag(mod_sim_2)
+max(g$psrf[,2])</code></pre>
+<pre><code>## [1] 1.013749</code></pre>
+<p>Autocorrelation:</p>
+<pre class="r"><code>autocorr.plot(mod_sim_2)</code></pre>
+<p><img src="images/acf_2.png" /></p>
+<p>We see a slight improvement in the penalized deviance,</p>
+<pre class="r"><code>dic_2 = dic.samples(mod_2, n.iter=1e3, progress.bar=&quot;none&quot;)
+dic_2</code></pre>
+<pre><code>## Mean deviance:  52382 
+## penalty 126.8 
+## Penalized deviance: 52508</code></pre>
+<p>Because the model now includes covariates at the individual sample level, the residuals are no longer clustered by team.</p>
+<pre class="r"><code>mod_2_params = apply(mod_csim_2, 2, median)
+b_win &lt;- mod_2_params[&#39;b_win&#39;]
+mu &lt;- mod_2_params[&#39;mu&#39;]
+tau &lt;- mod_2_params[&#39;tau&#39;]
+
+#alpha_resid &lt;- mod_3_params[1:142]-mu
+
+mod_2_coef &lt;- data.frame(mod_2_params[1:142])
+names(mod_2_coef) &lt;- c(&#39;alpha&#39;)
+mod_2_coef$team_id&lt;-seq.int(nrow(mod_2_coef))
+mod_2_coef &lt;- merge(s_team_attempts, mod_2_coef, all.x = TRUE)
+mod_2_coef$lambda &lt;- exp(mod_2_coef$alpha + b_win * mod_2_coef$win_prob)
+
+mod_2_coef$residual &lt;- mod_2_coef$attempts_per_game-mod_2_coef$lambda
+
+mod_1_resid_1 &lt;- mod_1_resid_1 + 
+  labs(title=expression(paste(&quot;Shot residuals by index&quot;)), 
+       subtitle=&quot;Simple Poisson model&quot;,
+       #caption=&quot;Source:&quot;,
+       x=&quot;index&quot;,
+       y=&quot;Residuals&quot;) +
+  scale_y_continuous(limits = c(-25, 25))
+
+mod_2_resid_1 &lt;- ggplot(mod_2_coef, aes(x = seq(1, length(residual)), y = residual)) +
+  geom_jitter(width = 0.15, height = 0.15, shape=20, alpha = .2, stroke=0) + 
+  labs(title=expression(paste(&quot;Shot residuals by index&quot;)), 
+       subtitle=&quot;Poisson regression&quot;,
+       #caption=&quot;Source:&quot;,
+       x=&quot;index&quot;,
+       y=&quot;Residuals&quot;) +
+  scale_y_continuous(limits = c(-25, 25))
+
+grid.arrange(mod_1_resid_1, mod_2_resid_1, ncol=2)</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>#lambdas_2 &lt;- mod_2_coef %&gt;% group_by(lambdas) %&gt;% summarise(variance = var(attempts))
+mod_1_resid_var &lt;- ggplot(lambdas, aes(lambdas, variance)) +
+  geom_point(size=.05, shape=16) + 
+  labs(title=expression(paste(&quot;Team attempts variance by &quot;,lambda)), 
+       subtitle=&quot;&quot;,
+       #caption=&quot;Source:&quot;,
+       x=expression(lambda),
+       y=&quot;Variance&quot;) +
+  geom_abline(intercept = 0, linetype=2)</code></pre>
+</div>
+<div id="negative-binomial-regression" class="section level2">
+<h2>Negative Binomial Regression</h2>
+<p>Recall that our data was over-dispersed. When fitting a negative binomial regression, we introduce unobserved heterogeneity among the games by adding an additional parameter, <span class="math inline">\(r\)</span>:</p>
+<p><span class="math display">\[y_{i}\mid \lambda_{i} \overset{\mathrm{ind.}}{\sim} \mathit{NB}(p_{i}, r) \\ p_{i}=\dfrac{r}{r+\lambda_{i}}\\ \\ i=1,..,n\]</span></p>
+<p>The linear and link functions and their priors will be the same as the ones used for the Poisson regression. We will place a uniform prior on <span class="math inline">\(r\)</span> with an upper bound of 50, since at higher values the negative binomial distribution converges to a Poisson distribution.</p>
+<p><span class="math display">\[r \sim \mathit{U}(0, 50)\]</span></p>
+<pre class="r"><code>mod_string = &quot; model {
+
+  for (i in 1:length(attempts_per_game)){
+      attempts_per_game[i] ~ dnegbin(p[i],r)
+      p[i] = r/(r+lambda[i])
+      log(lambda[i]) = mu[i]
+      mu[i] = alpha[team_id[i]] + b_win*win_prob[i]
+  
+  }
+
+  for (t in 1:max(team_id)) {
+    alpha[t] ~ dnorm(mu_a, inv_tau_sq)
+  }
+  
+  mu_a ~ dnorm(0.0, 1.0/1.0e6)
+  inv_tau_sq ~ dgamma(1/2.0, 1/2.0)
+  tau = sqrt( 1.0 / inv_tau_sq )
+
+  b_win ~ dnorm(0.0, 1.0/1e4)
+  r ~ dunif(0,50)
+
+} &quot;
+
+data_jags = as.list(s_team_attempts)
+
+params = c(&quot;alpha[83]&quot;, &quot;b_win&quot;, &quot;r&quot;, &quot;mu_a&quot;, &quot;tau&quot;)
+
+mod_3 = jags.model(textConnection(mod_string), data=data_jags, n.chains=3, quiet=TRUE)
+update(mod_3, 1e2, progress.bar=&quot;none&quot;)
+
+mod_sim_3 = coda.samples(model=mod_3,
+                       variable.names=params,
+                       n.iter=3e3,
+                       progress.bar=&quot;none&quot;)
+                       
+mod_csim_3 = as.mcmc(do.call(rbind, mod_sim_3))</code></pre>
+<pre class="r"><code>plot(mod_sim_3)</code></pre>
+<p><img src="images/trace_plots_3.png" /> <img src="images/trace_plots_4.png" /></p>
+<pre class="r"><code>g &lt;- gelman.diag(mod_sim_3)
+max(gelman.diag(mod_sim_3)$psrf[,2])</code></pre>
+<pre><code>## [1] 1.095722</code></pre>
+<pre class="r"><code>autocorr.plot(mod_sim_3)</code></pre>
+<p><img src="images/acf_3.png" /></p>
+<p>Our DIC has again slightly improved:</p>
+<pre class="r"><code>dic_3 = dic.samples(mod_3, n.iter=1e3, progress.bar=&quot;none&quot;)
+dic_3</code></pre>
+<pre><code>## Mean deviance:  51749 
+## penalty 121.7 
+## Penalized deviance: 51871</code></pre>
+<pre class="r"><code>mod_3_params = apply(mod_csim_3, 2, median)
+b_win &lt;- mod_3_params[&#39;b_win&#39;]
+r &lt;- mod_3_params[&#39;r&#39;]
+mu_a &lt;- mod_3_params[&#39;mu_a&#39;]
+
+#alpha_resid &lt;- mod_3_params[1:142]-mu_a
+
+mod_3_coef &lt;- data.frame(mod_3_params[1:142])
+names(mod_3_coef) &lt;- c(&#39;alpha&#39;)
+mod_3_coef$team_id&lt;-seq.int(nrow(mod_3_coef))
+mod_3_coef &lt;- merge(s_team_attempts, mod_3_coef, all.x = TRUE)
+mod_3_coef$lambda &lt;- exp(mod_3_coef$alpha + b_win * mod_3_coef$win_prob)
+
+mod_3_coef$residual &lt;- mod_3_coef$attempts_per_game-mod_3_coef$lambda</code></pre>
+<p>Comparing the negative binomial regression to the Poisson regression, we should expect to see the same mean number of shots, but more dispersion in the posterior predictive distribution. Let’s look specifically at the predictive posterior for Manchester United:</p>
+<pre class="r"><code>n_sim = 9000
+win_prob = .75
+
+sim_manchest_utd_alpha &lt;- mod_csim_3[,&quot;alpha[83]&quot;]
+sim_b_win &lt;- mod_csim_3[,&quot;b_win&quot;]
+sim_r &lt;- mod_csim_3[,&quot;r&quot;]
+
+sim_mu &lt;- sim_manchest_utd_alpha + sim_b_win * win_prob
+sim_lambda &lt;- exp(sim_mu)
+sim_p &lt;- sim_r / (sim_r + sim_lambda)
+sim_y_nb &lt;- data.frame(Distribution = &quot;Negative binomial&quot;, x = rnbinom(n_sim, size = sim_r, prob = sim_p))
+
+n_sim = 12000
+sim_manchest_utd_alpha &lt;- mod_csim_2[,&quot;alpha[83]&quot;]
+sim_b_win &lt;- mod_csim_2[,&quot;b_win&quot;]
+sim_mu &lt;- sim_manchest_utd_alpha + sim_b_win * win_prob
+sim_lambda &lt;- exp(sim_mu)
+sim_y_p &lt;- data.frame(Distribution = &quot;Poisson&quot;, x = rpois(n_sim, sim_lambda))
+
+posterior_pred &lt;- rbind(sim_y_nb,sim_y_p)
+ggplot(posterior_pred, aes(x = x, fill = Distribution)) + geom_density(alpha = 0.70) +
+  labs(title=&quot;Predictive Posterior Comparison&quot;, 
+       subtitle=&quot;Manchester United, 75% win probability&quot;,
+       #caption=&quot;Source:&quot;,
+       x=&quot;# Shots&quot;,
+       y = &quot;Density&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>Our coefficient for win probability is 1.07, indicating a positive relationship with the team’s shot attempts. The antilogarithm of the coefficient can be interpreted as the multiplicative increase in expected shots for a unit increase in win probability:</p>
+<p><span class="math display">\[e^{\beta_{win}} \approx 2.91\]</span></p>
+<p>Since our win probability will never actually increase by more than 1, this interpretation isn’t very helpful. However, we can simply divide our coefficient by 10 and see that an increase in win probability by 10% is associated with an 11% increase in expected shots:</p>
+<p><span class="math display">\[e^{\dfrac{\beta_{win}}{10}} \approx 1.11\]</span></p>
+<p>We can visualize and verify this relationship by looking at how different win probabilities affect the entire predictive posterior distributions:</p>
+<pre class="r"><code>n_sim = 9000
+
+
+win_prob = .75
+
+sim_manchest_utd_alpha &lt;- mod_csim_3[,&quot;alpha[83]&quot;]
+sim_b_win &lt;- mod_csim_3[,&quot;b_win&quot;]
+sim_r &lt;- mod_csim_3[,&quot;r&quot;]
+
+posterior_pred = data.frame(Win_Probability = numeric(), x = numeric())
+
+for (i in seq(1,9,1)) {
+  win_prob = i/10
+  sim_mu &lt;- sim_manchest_utd_alpha + sim_b_win * win_prob
+  sim_lambda &lt;- exp(sim_mu)
+  sim_p &lt;- sim_r / (sim_r + sim_lambda)
+  sim_y_nb &lt;- data.frame(Win_Probability = win_prob, x = rnbinom(n_sim, size = sim_r, prob = sim_p))
+  posterior_pred &lt;- rbind(posterior_pred,sim_y_nb)
+}
+
+posterior_pred$Win_Probability = as.factor(posterior_pred$Win_Probability)
+ggplot(posterior_pred, aes(x = x, fill = Win_Probability)) + geom_density(alpha = 0.60) +
+  labs(title=&quot;Predictive Posterior by Win Probability&quot;, 
+       subtitle=&quot;Manchester United, 10%-90% win probability&quot;,
+       #caption=&quot;Source:&quot;,
+       x=&quot;# Shots&quot;,
+       y = &quot;Density&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+</div>
+<div id="next-steps" class="section level2">
+<h2>Next Steps</h2>
+<p>There are plenty of possibilities for improvement. In general, we should perform more diagnostics to get a better understanding of the over-dispersion, and look into other distributions and parameterizations. Some ideas:</p>
+<ul>
+<li><p>We could adjust our team level in the hierarchical structure to instead be a team-season level, since teams will significantly change during the off-season.</p></li>
+<li><p>We could add additional covariates and interactions. For example, it would make sense to include the probability of a tie, since a low win probability doesn’t necessarily mean a high loss probability. I also suspect that player injuries could have a substantial effect, so including a starting roster related covariate could be a good idea.</p></li>
+<li><p>We could refine our population of interest to quality shots, or shots on goal. Our model might fit better when predicting similar types of shots.</p></li>
+</ul>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

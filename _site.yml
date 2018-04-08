@@ -1,0 +1,10 @@
+name: soccer-shots
+output_dir: '.'
+navbar:
+  title: Soccer Shots
+output:
+  html_document:
+    theme: flatly
+    lib_dir: site_libs
+    self_contained: no
+
