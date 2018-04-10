@@ -27,7 +27,6 @@ I explore real game data which comes from [Kaggle](https://www.kaggle.com/secare
 - `events.csv` contains event data about European soccer games, including shot attempts
 - `games.csv` contains metadata and market odds about each game
 
-
 ##Data Exploration
 
 ```{r message=FALSE, warning=FALSE}
@@ -624,7 +623,7 @@ for (i in seq(1,9,1)) {
 }
 
 posterior_pred$Win_Probability = as.factor(posterior_pred$Win_Probability)
-ggplot(posterior_pred, aes(x = x, fill = Win_Probability)) + geom_density(alpha = 0.60) +
+ggplot(posterior_pred, aes(x = x, fill = Win_Probability)) + geom_density(alpha = 0.30) +
   labs(title="Predictive Posterior by Win Probability", 
        subtitle="Manchester United, 10%-90% win probability",
        #caption="Source:",

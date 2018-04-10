@@ -2,6 +2,10 @@ name: soccer-shots
 output_dir: '.'
 navbar:
   title: Soccer Shots
+  right:
+  - text: "View on GitHub"
+    icon: fa-github fa-2x fa-fw
+    href: https://github.com/WillFleming/soccer-shots
 output:
   html_document:
     theme: flatly
